@@ -1,35 +1,53 @@
 require './models/word.rb'
 
 class ThreeWord
-  def initialize(file)
-    @file = file
-    @h = {}
-    @runningMaxKey = nil
+  def initialize(files=[])
+    @files = files
+    @frequency = {}
+    @top_100 = []
   end
 
   def process_file
-    File.open(@file, "r").each_line do |line|
-      process_line(line)
+    @files.each do |file|
+      previous_words = []
+      File.open(file, "r").each_line do |line|
+        previous_words = process_line(previous_words, line)
+      end
     end
-    puts @runningMaxKey
-    puts @h[@runningMaxKey]
+    get_top_100
   end
 
-  def process_line(line)
-    words = line.split(" ")
+  def process_lines(lines)
+    previous_words = []
+    lines.each do |line|
+      previous_words = process_line(previous_words, line)
+    end
+    get_top_100
+  end
+
+  def process_line(previous_words, line)
+    words =  previous_words + line.strip.split(" ")
 
     words.each_with_index do |w, i|
       if i < words.length - 2
         threeWord = "#{Word.new(words[i]).to_string} #{Word.new(words[i+1]).to_string} #{Word.new(words[i+2]).to_string}"
-        if @h[threeWord] != nil
-          @h[threeWord]+=1
+        if @frequency[threeWord] != nil
+          @frequency[threeWord]+=1
         else
-          @h[threeWord] = 1
-        end
-        if @runningMaxKey.nil? || @h[threeWord] > @h[@runningMaxKey]
-          @runningMaxKey = threeWord
+          @frequency[threeWord] = 1
         end
       end
+    end
+    words[(words.length-2)..]
+  end
+
+  def get_top_100
+    @top_100 = Hash[@frequency.sort_by { |a,b| -b }[0..99]]
+  end
+
+  def print_top_100
+    @top_100.each do |v|
+      puts "#{v[0]} - #{v[1]}"
     end
   end
 end

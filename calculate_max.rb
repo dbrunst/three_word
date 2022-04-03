@@ -1,38 +1,31 @@
 #!/usr/bin/ruby
+
 require './models/three_word.rb'
+require 'timeout'
 
-# a = ThreeWord.new
-# key, val  =  a.draft("this is a test line'")
-# puts key
-# puts val
-
-# 1 file path
-if ARGV.length > 0
-  #get file paths
+if !ARGV.empty?
+  files = []
   ARGV.each do |file|
     if File.exist?(file)
-      f = ThreeWord.new(file)
-      f.process_file
-
-      # File.open(file, "r").each_line do |line|
-      #   puts line
-      # end
-      # file.close
+      files.append(file)
     else
       puts "File: \"#{file}\" does not exist. Please verify the path"
+      return
     end
   end
+  f = ThreeWord.new(files)
+  f.process_file
+  f.print_top_100
+else
+  t = 10
+  begin
+    status = Timeout::timeout(t) {
+      f = ThreeWord.new()
+      f.process_lines(ARGF)
+      f.print_top_100
+    }
+  rescue Timeout::Error
+    puts "Usage: `ruby ./calculate_max.rb {file} {file}`"
+    puts "Usage: `cat {dir/files} | ruby ./calculate_max.rb`"
+  end
 end
-
-
-# The program accepts a list of one *or more* file paths (e.g. `ruby solution.rb texts/moby-dick.txt brothers-karamazov.txt ...).`
-# The program *also* accepts input via stdin (e.g. `cat texts/*.txt | java solution.java`).
-
-
-
-
-
-
-
-
-# The program outputs the first 100 most common three word sequences.

@@ -7,21 +7,23 @@ gem install rspec
 
 #Run Tests
 ```
-run tests:  rspec ./specs/three_word_spec.rb
+rspec ./specs/word_spec.rb
+rspec ./specs/three_word_spec.rb
 ```
 
+#How to run program:
+```
+    ruby ./calculate_max.rb {file} {file}
+    cat {dir/files} | ruby ./calculate_max.rb
+```
+#Next steps
+```
+  Make the word class more efficient - there is currently some unecessary repetition
+  Handle more unicode characters
+  Handle timeout better
+```
 
-
-
-* Your README should include:
-  - How to run your program.
-  - How to run the tests.
-  - What you would do next, given more time (if anything)?
-  - Are there bugs that you are aware of?
-
-
-  todo:
-  keep only what i need in memory
-  return top 100 not just top
-  Are names considered words? will need a dictionary to exclude non words
-  are we handling numbers 
+#Bugs
+```
+  My numbers are slightly off from the example provided but can't seem to find an issue on my side
+```
