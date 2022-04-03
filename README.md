@@ -9,6 +9,9 @@ gem install rspec
 ```
 rspec ./specs/word_spec.rb
 rspec ./specs/three_word_spec.rb
+
+or to runn them all:
+rspec ./specs/
 ```
 
 #How to run program:
@@ -21,9 +24,11 @@ rspec ./specs/three_word_spec.rb
   Make the word class more efficient - there is currently some unecessary repetition
   Handle more unicode characters
   Handle timeout better
+  Add testing around file reading
 ```
 
 #Bugs
 ```
   My numbers are slightly off from the example provided but can't seem to find an issue on my side
+  three empty spaces are getting captured as words (16 times) that needs to be removed
 ```
